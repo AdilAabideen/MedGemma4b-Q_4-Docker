@@ -24,7 +24,7 @@ FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
 
 RUN apt-get update && apt-get install -y \
     curl ca-certificates python3 python3-pip \
-    && pip3 install --no-cache-dir huggingface_hub \
+    && pip3 install --no-cache-dir -U "huggingface_hub[cli]" \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -35,7 +35,7 @@ RUN ldconfig
 
 RUN mkdir -p /models/medgemma
 
-RUN huggingface-cli download \
+RUN hf download \
     unsloth/medgemma-4b-it-GGUF \
     medgemma-4b-it-Q8_0.gguf \
     --local-dir /models/medgemma
