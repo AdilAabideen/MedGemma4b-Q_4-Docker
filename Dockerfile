@@ -10,7 +10,13 @@ RUN git clone https://github.com/ggml-org/llama.cpp.git
 
 WORKDIR /build/llama.cpp
 
-RUN cmake -B build -DGGML_CUDA=ON -DCMAKE_BUILD_TYPE=Release \
+ENV LIBRARY_PATH=/usr/local/cuda/lib64/stubs:$LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64/stubs:$LD_LIBRARY_PATH
+
+RUN cmake -B build \
+    -DGGML_CUDA=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_EXE_LINKER_FLAGS="-L/usr/local/cuda/lib64/stubs -lcuda" \
     && cmake --build build --target llama-server --config Release -j2
 
 
@@ -24,6 +30,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 COPY --from=builder /build/llama.cpp/build/bin/llama-server /usr/local/bin/llama-server
+COPY --from=builder /build/llama.cpp/build/bin/libggml*.so* /usr/local/lib/
+COPY --from=builder /build/llama.cpp/build/bin/libllama*.so* /usr/local/lib/ 2>/dev/null || true
+
+RUN ldconfig
 
 RUN mkdir -p /models/medgemma
 
