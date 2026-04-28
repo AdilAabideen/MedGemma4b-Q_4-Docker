@@ -46,7 +46,7 @@ RUN chmod +x /app/start.sh
 
 EXPOSE 8000
 
-ENV MODEL_PATH=/models/medgemma/medgemma-4b-it-Q8_0.gguf
+ENV MODEL_PATH=/models/medgemma/medgemma-4b-it-Q4_K_M.gguf
 ENV CTX_SIZE=8192
 ENV N_GPU_LAYERS=999
 
