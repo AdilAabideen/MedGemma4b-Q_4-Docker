@@ -8,7 +8,10 @@ echo "GPU layers: $N_GPU_LAYERS"
 
 exec llama-server \
   -m "$MODEL_PATH" \
+  --alias medgemma-4b-it \
   --host 0.0.0.0 \
   --port 8000 \
   --ctx-size "$CTX_SIZE" \
-  --n-gpu-layers "$N_GPU_LAYERS"
+  --n-gpu-layers "$N_GPU_LAYERS" \
+  --threads 8 \
+  --metrics

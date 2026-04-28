@@ -38,7 +38,7 @@ RUN mkdir -p /models/medgemma
 
 RUN hf download \
     unsloth/medgemma-4b-it-GGUF \
-    medgemma-4b-it-Q8_0.gguf \
+    medgemma-4b-it-Q4_K_M.gguf \
     --local-dir /models/medgemma
 
 COPY start.sh /app/start.sh
@@ -47,7 +47,7 @@ RUN chmod +x /app/start.sh
 EXPOSE 8000
 
 ENV MODEL_PATH=/models/medgemma/medgemma-4b-it-Q8_0.gguf
-ENV CTX_SIZE=4096
+ENV CTX_SIZE=8192
 ENV N_GPU_LAYERS=999
 
 CMD ["/app/start.sh"]
